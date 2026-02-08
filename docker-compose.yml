@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend Service
+  api:
+    build:
+      context: .
+      target: fastapi
+    container_name: compliance-copilot-api
+    ports:
+      - "8000:8000"
+    environment:
+      # AWS Bedrock Configuration
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - BEDROCK_MODEL_ID=${BEDROCK_MODEL_ID:-amazon.nova-lite-v1:0}
+      - BEDROCK_MAX_TOKENS=${BEDROCK_MAX_TOKENS:-2000}
+      - BEDROCK_TEMPERATURE=${BEDROCK_TEMPERATURE:-0.3}
+      - BEDROCK_GUARDRAIL_ID=${BEDROCK_GUARDRAIL_ID}
+      - BEDROCK_GUARDRAIL_VERSION=${BEDROCK_GUARDRAIL_VERSION}
+      
+      # Application Configuration
+      - MAX_DOCUMENT_LENGTH=${MAX_DOCUMENT_LENGTH:-50000}
+      - MIN_DOCUMENT_LENGTH=${MIN_DOCUMENT_LENGTH:-10}
+      - API_TIMEOUT_SECONDS=${API_TIMEOUT_SECONDS:-30}
+      - ENABLE_NER=${ENABLE_NER:-true}
+      - ENABLE_REGEX=${ENABLE_REGEX:-true}
+    volumes:
+      - ./app:/app/app
+      - ./tests:/app/tests
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Streamlit Frontend Service
+  ui:
+    build:
+      context: .
+      target: streamlit
+    container_name: compliance-copilot-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      - api
+    volumes:
+      - ./app:/app/app
+    restart: unless-stopped
+
+networks:
+  default:
+    name: compliance-copilot-network

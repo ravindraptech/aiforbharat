@@ -1,0 +1,26 @@
+# Core API Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+
+# Frontend
+streamlit==1.31.0
+
+# AWS Bedrock
+boto3==1.34.34
+
+# Document Processing
+PyPDF2==3.0.1
+
+# NLP
+spacy==3.7.2
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.4
+hypothesis==6.98.0
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.10.6
+tenacity==8.2.3

@@ -1,0 +1,250 @@
+**Project:** AI Healthcare Compliance Copilot (Document Risk & Privacy Checker)
+**Goal:** Build a simple, responsible AI assistant that reviews healthcare-related documents and flags compliance/privacy risks using only synthetic/public data.
+
+Focus:
+
+* Simplicity
+* Accuracy
+* Responsible AI
+* Fast build
+* Clean architecture
+
+Avoid overengineering.
+
+---
+
+# 2. Product Name
+
+**AI Healthcare Compliance Copilot**
+
+---
+
+# 3. Problem Statement
+
+Healthcare and life-sciences teams frequently share documents (emails, SOPs, reports) that may unintentionally expose sensitive data or violate remember privacy/compliance requirements.
+
+Manual compliance review is slow and inconsistent.
+
+We need an AI assistant that:
+
+* Reviews text/documents
+* Detects potential compliance/privacy risks
+* Suggests improvements
+* Provides a compliance readiness score
+
+This tool is for **educational and internal compliance awareness only**, not legal advice.
+
+---
+
+# 4. Core Objectives
+
+Build a web-based tool that allows user to:
+
+1. Upload or paste document text
+2. AI analyzes document
+3. System identifies:
+
+   * Sensitive data exposure
+   * Missing compliance safeguards
+   * Risky language
+4. Generate:
+
+   * Compliance risk report
+   * Suggestions
+   * Compliance score
+5. Display responsible AI disclaimer
+
+Use **synthetic or public sample data only**.
+
+---
+
+# 5. Functional Requirements
+
+## 5.1 Input Options
+
+User must be able to:
+
+* Paste text
+* Upload .txt
+* Upload .pdf (optional if time permits)
+
+## 5.2 AI Analysis Output
+
+Return structured output with:
+
+### A. Sensitive Data Detection
+
+Detect presence of:
+
+* Person names
+* Age
+* Phone
+* Email
+* Address
+* Patient/health condition references
+* IDs or record numbers (synthetic)
+
+### B. Compliance Risks
+
+Examples:
+
+* Patient data shared without consent mention
+* Direct identifiers used
+* Data sharing language unsafe
+* Missing confidentiality statement
+
+### C. Missing Safeguards
+
+Check if document lacks:
+
+* Consent statement
+* Privacy notice
+* Confidentiality statement
+* Data handling note
+
+### D. Suggestions
+
+Provide safer alternatives:
+Example:
+Replace patient name with patient ID.
+
+### E. Compliance Score
+
+Generate simple score:
+0–100
+
+Logic example:
+
+* Sensitive data present → −20
+* No consent → −20
+* No disclaimer → −15
+* Safe language → +10
+
+### F. Risk Level
+
+Low / Medium / High
+
+### G. Mandatory Disclaimer
+
+Always display:
+"This AI tool provides compliance awareness insights using synthetic rules and is not legal advice. Do not use with real patient data."
+
+---
+
+# 6. Non-Functional Requirements
+
+* Simple UI
+* Fast response (<5 sec)
+* Clean code structure
+* Modular prompts
+* Easy to extend
+* No real patient data storage
+* Stateless processing
+
+---
+
+# 7. Suggested Tech Stack
+
+## Backend
+
+Python
+FastAPI
+
+## AI Layer
+
+Use LLM via:
+
+* Amazon Bedrock Nova models
+
+## Frontend
+
+Streamlit (preferred for speed)
+
+## Optional
+
+Regex-based sensitive data detection before LLM call.
+
+---
+
+# 8. System Architecture
+
+User Input
+→ Preprocessing
+→ Sensitive data regex scan
+→ LLM compliance analysis
+→ Score generator
+→ Structured JSON output
+→ UI dashboard
+
+Keep architecture modular.
+
+
+# 09. UI Requirements
+
+## Main Page
+
+Title:
+AI Healthcare Compliance Copilot
+
+Sections:
+
+1. Text input box
+2. File upload
+3. Analyze button
+
+## Output Panel
+
+Display:
+
+* Compliance score (large)
+* Risk level
+* Sensitive data found
+* Risks
+* Suggestions
+* Disclaimer (highlighted)
+
+Use clean professional layout.
+
+---
+
+# 10. Evaluation Scenarios (Use Synthetic Only)
+
+Include sample test documents:
+
+### Test 1 (High risk)
+
+Patient name + disease + email
+
+### Test 2 (Medium risk)
+
+Internal report with no consent line
+
+### Test 3 (Low risk)
+
+Generic anonymized SOP
+
+System must correctly differentiate.
+
+---
+
+# 11. Guardrails (Critical)
+
+Must implement:
+
+* Do not store uploaded text
+* Show synthetic data warning
+* Show not-legal-advice disclaimer
+* Prevent medical diagnosis output
+* Prevent treatment suggestions
+
+---
+
+# 12. Coding Standards
+
+* Clean modular code
+* Comment important logic
+* Use environment variables for API keys
+* Error handling required
+* Use type hints where possible
+
+---
